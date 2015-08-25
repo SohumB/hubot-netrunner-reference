@@ -2,18 +2,18 @@
   "name": "hubot-netrunnerdb",
   "description": "A hubot script that retrieves Netrunner card images from NetrunnerDB.com",
   "version": "0.0.0",
-  "author": "Nick Lopez <nlopez@amplify.com>",
+  "author": "Nick Lopez (thalweg) <nlopez@gmail.com>",
   "license": "MIT",
 
   "keywords": ["hubot","hubot-scripts","netrunner","netrunnerdb"],
 
   "repository": {
     "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-netrunnerdb.git"
+    "url": "git://github.com/thalweg/hubot-netrunnerdb.git"
   },
 
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-netrunnerdb/issues"
+    "url": "https://github.com/thalweg/hubot-netrunnerdb/issues"
   },
 
   "dependencies": {
