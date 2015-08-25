@@ -9,6 +9,8 @@
 #
 # Commands:
 #   hubot nrdb <card name> - Displays the Netrunner card <card name>
+#   hubot netrunner <card name> - Displays the Netrunner card <card name>
+#   hubot netrunnerdb <card name> - Displays the Netrunner card <card name>
 #
 # Author:
 #   thalweg
@@ -19,8 +21,8 @@ module.exports = (robot) ->
     .get() (err, res, body) ->
       robot.brain.set 'cards', JSON.parse body
 
-  robot.respond /nrdb (.*)/i, (msg) ->
-    cardName = msg.match[1]
+  robot.respond /(nrdb|netrunner(db)?) (.*)/i, (msg) ->
+    cardName = msg.match[3]
     cards = robot.brain.get('cards')
 
     console.log "Looking for Netrunner card \"#{cardName}\" in #{cards.length} cards"
