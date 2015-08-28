@@ -16,23 +16,31 @@
 #   thalweg
 #
 
+Fuse = require 'fuse.js'
+
 module.exports = (robot) ->
   robot.http("http://netrunnerdb.com/api/cards/")
     .get() (err, res, body) ->
       robot.brain.set 'cards', JSON.parse body
 
   robot.respond /(nrdb|netrunner(db)?) (.*)/i, (msg) ->
-    cardName = msg.match[3]
+    query = msg.match[3]
     cards = robot.brain.get('cards')
 
-    console.log "Looking for Netrunner card \"#{cardName}\" in #{cards.length} cards"
-    results = []
-    for card in cards
-      if card.title.match(///#{cardName}///i)
-        results.push("http://netrunnerdb.com#{card.imagesrc}")
-        console.log "\"#{card.title}\" matched \"#{cardName}\""
-    if results.length != 0
-      msg.send results[0]
+    options =
+      caseSensitive: false
+      includeScore: false
+      shouldSort: true
+      threshold: 0.6
+      location: 0
+      distance: 100
+      maxPatternLength: 32
+      keys: ['title']
+    fuse = new Fuse cards, options
+    results = fuse.search(query)
+
+    if results.length > 0
+      msg.send "http://netrunnerdb.com#{results[0].imagesrc}"
     else
-      msg.send "Couldn't find a Netrunner card name matching \"#{cardName}\""
+      msg.send "Couldn't find a Netrunner card name matching \"#{query}\""
 

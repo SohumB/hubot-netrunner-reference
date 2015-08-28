@@ -4,22 +4,23 @@
   "version": "0.0.2",
   "author": "Nick Lopez (thalweg) <nlopez@gmail.com>",
   "license": "MIT",
-
-  "keywords": ["hubot","hubot-scripts","netrunner","netrunnerdb"],
-
+  "keywords": [
+    "hubot",
+    "hubot-scripts",
+    "netrunner",
+    "netrunnerdb"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/thalweg/hubot-netrunnerdb.git"
   },
-
   "bugs": {
     "url": "https://github.com/thalweg/hubot-netrunnerdb/issues"
   },
-
   "dependencies": {
-    "coffee-script": "~1.6"
+    "coffee-script": "~1.6",
+    "fuse.js": "^1.2.2"
   },
-
   "devDependencies": {
     "mocha": "*",
     "chai": "*",
@@ -30,9 +31,7 @@
     "matchdep": "~0.1.2",
     "grunt-contrib-watch": "~0.5.3"
   },
-
   "main": "index.coffee",
-
   "scripts": {
     "test": "grunt test"
   }
