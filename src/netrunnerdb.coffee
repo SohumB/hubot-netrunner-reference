@@ -57,7 +57,7 @@ module.exports = (robot) ->
       [/\[Click\]/g, ':click:'],
       [/\[Credits\]/gm, ':credit:'],
       [/\[Trash\]/gm, ':trash:'],
-      [/\[Link\]/gm, ':link:'],
+      [/\[Link\]/gm, ':links:'],
       [/\[Memory Unit\]/gm, ':mu:'],
       [/\[Recurring Credits\]/gm, ':recurringcredit:'],
       [/\[Subroutine\]/gm, ':subroutine:'],
