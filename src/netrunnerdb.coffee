@@ -80,7 +80,7 @@ module.exports = (robot) ->
         unicodes[match.replace(/<\/?sup>/g, '')]
       ],
     ]
-    replacements.reduce ((acc, [needle, haystack]) -> acc.replace(needle, haystack)), text
+    replacements.reduce ((acc, [needle, haystack]) -> acc.replace(needle, haystack)), (text || "")
 
   searchOn /(nrtx|netrunner(db)?text) (.*)/i, 3, (card) ->
     props = switch
