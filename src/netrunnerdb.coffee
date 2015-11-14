@@ -97,6 +97,6 @@ module.exports = (robot) ->
     #{card.type}#{ if card.subtype then ": #{card.subtype}" else ''}
     #{props}
     #{(clean card.text).split("\n").map((line) -> "> #{line}").join("\n")}
-    #{ if card.flavor then "_#{card.flavor}_" else ''}
+    #{ if card.flavor then "_#{clean card.flavor}_" else ''}
     #{card.faction} • #{card.illustrator} • #{card.setname} ##{card.number}
     """
