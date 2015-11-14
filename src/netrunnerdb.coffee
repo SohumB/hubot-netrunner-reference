@@ -40,15 +40,18 @@ module.exports = (robot) ->
     fuse = new Fuse cards, options
     fuse.search(query)
 
+  respondToUser = (query, res, fn) ->
+    results = search query
+
+    if results.length > 0
+      res.send fn(results[0])
+    else
+      res.send "Couldn't find a Netrunner card name matching \"#{query}\""
+
   searchOn = (rgx, index, success) ->
     robot.respond rgx, (msg) ->
       query = msg.match[index]
-      results = search query
-
-      if results.length > 0
-        msg.send success(results[0])
-      else
-        msg.send "Couldn't find a Netrunner card name matching \"#{query}\""
+      respondToUser query, msg, success
 
   searchOn /(nrdb|netrunner(db)?) (.*)/i, 3, (card) -> "http://netrunnerdb.com#{card.imagesrc}"
 
@@ -82,7 +85,7 @@ module.exports = (robot) ->
     ]
     replacements.reduce ((acc, [needle, haystack]) -> acc.replace(needle, haystack)), (text || "")
 
-  searchOn /(nrtx|netrunner(db)?text) (.*)/i, 3, (card) ->
+  cardText = (card) ->
     props = switch
       when card.type_code == 'agenda' then "Adv: #{card.advancementcost} • Score: #{card.agendapoints}"
       when card.type_code == 'identity' && card.side_code == 'corp' then "Deck: #{card.minimumdecksize} • Influence: #{ card.influencelimit || '—' }"
@@ -100,3 +103,9 @@ module.exports = (robot) ->
     #{ if card.flavor then "_#{clean card.flavor}_" else ''}
     #{card.faction} • #{card.illustrator} • #{card.setname} ##{card.number}
     """
+
+  searchOn /(nrtx|netrunner(db)?text) (.*)/i, 3, cardText
+  robot.hear /\[\[[^\]]+\]\]/g, (res) ->
+    res.match.forEach (match) ->
+      query = match.slice(2, match.length - 2)
+      respondToUser query, res, cardText
