@@ -95,7 +95,7 @@ module.exports = (robot) ->
       when card.type_code == 'identity' && card.side_code == 'runner' then "Link: #{card.baselink} • Deck: #{card.minimumdecksize} • Influence: #{ card.influencelimit || '—' }"
       when card.type_code == 'operation' || card.type_code == 'event' then "Cost: #{card.cost} • Influence: #{card.factioncost}"
       when card.type_code == 'resource' || card.type_code == 'hardware' then "Install: #{card.cost} • Influence #{card.factioncost}"
-      when card.type_code == 'program' then "Install #{card.cost} • Memory: #{card.memoryunits}" + (if card.strength then " • Strength: #{card.strength}" else '') + " • Influence: #{card.factioncost}"
+      when card.type_code == 'program' then "Install #{card.cost} • Memory: #{card.memoryunits}" + (if typeof card.strength == "number" then " • Strength: #{card.strength}" else '') + " • Influence: #{card.factioncost}"
       when card.type_code == 'asset' || card.type_code == 'upgrade' then "Rez: #{card.cost} • Trash: #{card.trash} • Influence: #{card.factioncost}"
       when card.type_code == 'ice' then "Rez: #{card.cost} • Strength: #{card.strength} • Influence: #{card.factioncost}"
     """
