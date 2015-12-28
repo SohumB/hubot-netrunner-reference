@@ -85,6 +85,9 @@ module.exports = (robot) ->
     ]
     replacements.reduce ((acc, [needle, haystack]) -> acc.replace(needle, haystack)), (text || "")
 
+  multiline = (fn) -> (lines) ->
+    lines.split("\n").map(fn).join("\n")
+
   cardText = (card) ->
     props = switch
       when card.type_code == 'agenda' then "Adv: #{card.advancementcost} • Score: #{card.agendapoints}"
@@ -99,8 +102,8 @@ module.exports = (robot) ->
     *#{ if card.uniqueness then '◆ ' else '' }#{card.title}*
     #{card.type}#{ if card.subtype then ": #{card.subtype}" else ''}
     #{props}
-    #{(clean card.text).split("\n").map((line) -> "> #{line}").join("\n")}
-    #{ if card.flavor then "_#{clean card.flavor}_" else ''}
+    #{multiline((line) -> "> #{line}")(clean card.text)}
+    #{ if card.flavor then "#{multiline((line) -> "_#{line}_")(clean card.flavor)}" else ''}
     #{card.faction} • #{card.illustrator} • #{card.setname} ##{card.number}
     """
 
