@@ -2,7 +2,7 @@
   "name": "hubot-netrunnerdb",
   "description": "A hubot script that retrieves Netrunner card images from NetrunnerDB.com",
   "version": "0.1.3",
-  "author": "Nick Lopez (thalweg) <nlopez@gmail.com>",
+  "author": "Sohum Banerjea (SohumB) <sohumb@gmail.com>",
   "license": "MIT",
   "keywords": [
     "hubot",
@@ -12,12 +12,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/thalweg/hubot-netrunnerdb.git"
+    "url": "git://github.com/SohumB/hubot-netrunnerdb.git"
   },
   "bugs": {
-    "url": "https://github.com/thalweg/hubot-netrunnerdb/issues"
+    "url": "https://github.com/SohumB/hubot-netrunnerdb/issues"
   },
   "dependencies": {
+    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-register": "^6.4.3",
     "coffee-script": "~1.6",
     "fuse.js": "^1.2.2"
   },
