@@ -31,7 +31,7 @@ export default (robot) => {
     const cards = robot.brain.get("cards");
     const options = {
       caseSensitive: false,
-      includeScore: false,
+      include: ['score'],
       shouldSort: true,
       threshold: 0.6,
       location: 0,
@@ -45,7 +45,10 @@ export default (robot) => {
   function interact(query, res, transform) {
     var cards = search(query);
     if (cards.length > 0) {
-      res.send(transform(cards[0]));
+      const card = cards
+              .filter(c => c.score === cards[0].score)
+              .sort((c1, c2) => c1.item.title.length - c2.item.title.length)[0];
+      res.send(transform(card.item));
     } else {
       res.send(`Couldn't find a Netrunner card name matching "${query}"`);
     }
