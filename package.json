@@ -1,7 +1,7 @@
 {
   "name": "hubot-netrunnerdb",
   "description": "A hubot script that retrieves Netrunner card images from NetrunnerDB.com",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "author": "Sohum Banerjea (SohumB) <sohumb@gmail.com>",
   "license": "MIT",
   "keywords": [
