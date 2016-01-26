@@ -19,16 +19,39 @@
 //   SohumB, thalweg
 //
 
+import "babel-polyfill";
 import Fuse from "fuse.js";
 
 export default (robot) => {
   // Load NDB on startup
   robot.http("http://netrunnerdb.com/api/cards/").get()((err, res, body) => {
-    robot.brain.set("cards", JSON.parse(body));
+    const cards = JSON.parse(body);
+    const types = cards.reduce((acc, card) => {
+      acc.add(card.type_code);
+      card.subtype_code.split(' - ').forEach(subtype => acc.add(subtype));
+      return acc;
+    }, new Set());
+
+    robot.brain.set("cards", cards);
+    robot.brain.set("card_types", Array.from(types));
   });
 
-  function search(query) {
-    const cards = robot.brain.get("cards");
+  function search(text) {
+    const allCards = robot.brain.get("cards");
+    const types = new Set(robot.brain.get("card_types"));
+    types.add("id");
+
+    const match = text.match(/([^/]+)\/(.+)/);
+    const usingFlag = match && types.has(match[1]);
+
+    const cards = usingFlag ? allCards.filter(card => {
+      const flag = match[1];
+      const typ = flag === "id" ? "identity" : flag;
+      return (card.type_code === typ) || card.subtype_code.indexOf(flag) > -1;
+    }) : allCards;
+
+    const query = usingFlag ? match[2] : text;
+
     const options = {
       caseSensitive: false,
       include: ['score'],
@@ -43,7 +66,7 @@ export default (robot) => {
   }
 
   function interact(query, res, transform) {
-    var cards = search(query);
+    const cards = search(query);
     if (cards.length > 0) {
       const card = cards
               .filter(c => c.score === cards[0].score)
