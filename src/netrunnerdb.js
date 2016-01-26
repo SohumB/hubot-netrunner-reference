@@ -36,10 +36,13 @@ export default (robot) => {
     robot.brain.set("card_types", Array.from(types));
   });
 
-  function search(text) {
+  function search(orig) {
     const allCards = robot.brain.get("cards");
     const types = new Set(robot.brain.get("card_types"));
     types.add("id");
+
+    const aliases = robot.brain.get("hubot-alias-table") || {};
+    const text = aliases[orig] || orig;
 
     const match = text.match(/([^/]+)\/(.+)/);
     const usingFlag = match && types.has(match[1]);
