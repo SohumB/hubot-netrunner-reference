@@ -70,3 +70,9 @@ Install 2 • Memory: 1 • Influence: 2
 
 Anarch • Bruno Balixa • Core Set #12
 ```
+
+## Development
+
+Code is in the `es6` folder, and it gets built to the `src` folder by
+`grunt` to be picked up by hubot. Tests are in `test`, and they're run
+as es6 directly by `mocha` and `babel-register`; just run `npm test`.
