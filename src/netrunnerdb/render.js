@@ -39,7 +39,7 @@ function clean(text) {
 
 function multiline(fn) {
   return function (lines) {
-    return lines.split("\n").map(fn).join("\n");
+    return lines.split(/\r?\n/).map(fn).join("\n");
   };
 }
 

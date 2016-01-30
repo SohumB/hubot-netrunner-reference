@@ -30,7 +30,7 @@ export function clean(text) {
 }
 
 export function multiline(fn) {
-  return lines => lines.split("\n").map(fn).join("\n");
+  return lines => lines.split(/\r?\n/).map(fn).join("\n");
 }
 
 export default function render(card) {
