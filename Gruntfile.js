@@ -17,9 +17,12 @@ module.exports = function(grunt) {
         plugins: ['add-module-exports']
       },
       dist: {
-        files: {
-          'src/netrunnerdb.js': 'es6/netrunnerdb.js'
-        }
+        files: [{
+          expand: true,
+          cwd: 'es6/',
+          src: ['**/*.js'],
+          dest: 'src/'
+        }]
       }
     }
   });
