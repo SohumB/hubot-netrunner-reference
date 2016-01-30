@@ -15,10 +15,10 @@ Then add **hubot-netrunner-reference** to your `external-scripts.json`:
 ```
 
 We use Slack output syntax; pull requests welcome to support other
-platforms. We also output emoji as `:click:`, `:credit:`, `:mu:`, `:links:`,
-`:trash:`, `:recurringcredit:`, and `:subroutine:`. Grab them from
-[the icon font|https://github.com/MWDelaney/Netrunner-Icon-Font] and
-upload them to your Slack.
+platforms. We also output emoji as `:click:`, `:credit:`, `:mu:`,
+`:links:`, `:trash:`, `:recurringcredit:`, and `:subroutine:`. Grab
+them from https://github.com/MWDelaney/Netrunner-Icon-Font and upload
+them to your Slack.
 
 ## Syntax
 
