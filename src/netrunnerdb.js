@@ -14,19 +14,38 @@ var _render = require("./netrunnerdb/render");
 
 var _render2 = _interopRequireDefault(_render);
 
+var _nrdb = require("./netrunnerdb/nrdb");
+
+var _nrdb2 = _interopRequireDefault(_nrdb);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Description:
+//   Simple NetrunnerDB.com card image / text fetcher
+//
+// Dependencies:
+//   none
+//
+// Configuration:
+//   none
+//
+// Commands:
+//   hubot nrdb <card name> - Displays the Netrunner card <card name>
+//   hubot netrunner <card name> - Displays the Netrunner card <card name>
+//   hubot netrunnerdb <card name> - Displays the Netrunner card <card name>
+//   hubot nrtx <card name> - Displays the Netrunner card <card name>, as text
+//   hubot netrunnertext <card name> - Displays the Netrunner card <card name>, as text
+//   hubot netrunnerdbtext <card name> - Displays the Netrunner card <card name>, as text
+//
+// Author:
+//   SohumB, thalweg
+//
 
 exports.default = function (robot) {
   // Load NDB on startup
-  robot.http("http://netrunnerdb.com/api/cards/").get()(function (err, res, body) {
-    var cards = JSON.parse(body);
-    var types = cards.reduce(function (acc, card) {
-      acc.add(card.type_code);
-      card.subtype_code.split(' - ').forEach(function (subtype) {
-        return acc.add(subtype);
-      });
-      return acc;
-    }, new Set());
+  (0, _nrdb2.default)().then(function (_ref) {
+    var cards = _ref.cards;
+    var types = _ref.types;
 
     robot.brain.set("cards", cards);
     robot.brain.set("card_types", Array.from(types));
@@ -95,25 +114,6 @@ exports.default = function (robot) {
       interact(query, res, _render2.default);
     });
   });
-}; // Description:
-//   Simple NetrunnerDB.com card image / text fetcher
-//
-// Dependencies:
-//   none
-//
-// Configuration:
-//   none
-//
-// Commands:
-//   hubot nrdb <card name> - Displays the Netrunner card <card name>
-//   hubot netrunner <card name> - Displays the Netrunner card <card name>
-//   hubot netrunnerdb <card name> - Displays the Netrunner card <card name>
-//   hubot nrtx <card name> - Displays the Netrunner card <card name>, as text
-//   hubot netrunnertext <card name> - Displays the Netrunner card <card name>, as text
-//   hubot netrunnerdbtext <card name> - Displays the Netrunner card <card name>, as text
-//
-// Author:
-//   SohumB, thalweg
-//
+};
 
 module.exports = exports['default'];

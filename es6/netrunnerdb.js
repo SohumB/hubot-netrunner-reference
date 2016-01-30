@@ -22,17 +22,11 @@
 import "babel-polyfill";
 import Fuse from "fuse.js";
 import render from "./netrunnerdb/render";
+import nrdb from "./netrunnerdb/nrdb";
 
 export default (robot) => {
   // Load NDB on startup
-  robot.http("http://netrunnerdb.com/api/cards/").get()((err, res, body) => {
-    const cards = JSON.parse(body);
-    const types = cards.reduce((acc, card) => {
-      acc.add(card.type_code);
-      card.subtype_code.split(' - ').forEach(subtype => acc.add(subtype));
-      return acc;
-    }, new Set());
-
+  nrdb().then(({ cards, types }) => {
     robot.brain.set("cards", cards);
     robot.brain.set("card_types", Array.from(types));
   });

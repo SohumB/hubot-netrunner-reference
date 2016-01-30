@@ -1,3 +1,4 @@
+import nrdb from "../../es6/netrunnerdb/nrdb";
 import render from "../../es6/netrunnerdb/render";
 import request from "request-promise";
 
@@ -5,8 +6,8 @@ describe("Card Rendering", () => {
   var cards;
 
   before(() => {
-    return request("http://netrunnerdb.com/api/cards/")
-      .then(c => cards = JSON.parse(c));
+    return nrdb()
+      .then(nrdb => cards = nrdb.cards);
   });
 
   function card(name) {
