@@ -1,5 +1,5 @@
 {
-  "name": "hubot-netrunnerdb",
+  "name": "hubot-netrunner-reference",
   "description": "A hubot script that retrieves Netrunner card images and text from netrunnerdb.com",
   "version": "1.1.1",
   "author": "Sohum Banerjea (SohumB) <sohumb@gmail.com>",
@@ -12,10 +12,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/SohumB/hubot-netrunnerdb.git"
+    "url": "git://github.com/SohumB/hubot-netrunner-reference.git"
   },
   "bugs": {
-    "url": "https://github.com/SohumB/hubot-netrunnerdb/issues"
+    "url": "https://github.com/SohumB/hubot-netrunner-reference/issues"
   },
   "dependencies": {
     "babel-polyfill": "^6.3.14",
@@ -36,6 +36,7 @@
   },
   "main": "index.coffee",
   "scripts": {
-    "test": "mocha --ui tdd --compilers js:babel-register test"
+    "test": "mocha --ui tdd --compilers js:babel-register test",
+    "build": "grunt babel:dist"
   }
 }
