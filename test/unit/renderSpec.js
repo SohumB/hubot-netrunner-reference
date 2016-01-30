@@ -35,4 +35,15 @@ _Access to the largest consumer database in the galaxy has its advantages._
 NBN • Matt Zeilinger • Core Set #85`);
   });
 
+  it("should render X strengths correctly", () => {
+    render(card("Darwin")).should.equal(`*Darwin*
+Program: Icebreaker - AI - Virus
+Install 3 • Memory: 1 • Strength: X • Influence: 3
+> 2:credit:: Break ice subroutine.
+> X is the number of virus counters on Darwin.
+> When your turn begins, you may pay 1:credit: to place 1 virus counter on Darwin.
+
+Anarch • Liiga Smilshkalne • Future Proof #102`);
+  });
+
 });
