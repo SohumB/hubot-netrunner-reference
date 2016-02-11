@@ -29,7 +29,9 @@ them to your Slack.
 ```
 
 Whenever a card name is expected, we support prepending it with a card
-type or subtype, so `program/hive` finds Hivemind, not the ICE.
+type or subtype, so `program/hive` finds Hivemind, not the ICE. (`id`
+and `breaker` are supported as shorthand for `identity` and
+`icebreaker`.)
 
 If you have `hubot-alias` installed, we tap into its list of aliases as well.
 

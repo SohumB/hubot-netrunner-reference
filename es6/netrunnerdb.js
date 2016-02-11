@@ -34,21 +34,21 @@ export default (robot) => {
   function search(orig) {
     const allCards = robot.brain.get("cards");
     const types = new Set(robot.brain.get("card_types"));
-    types.add("id");
+
+    const typeAliases = { id: "identity", breaker: "icebreaker" };
+    Object.keys(typeAliases).forEach(key => types.add(key));
 
     const aliases = robot.brain.get("hubot-alias-table") || {};
     const text = aliases[orig] || orig;
 
     const match = text.match(/([^/]+)\/(.+)/);
-    const usingFlag = match && types.has(match[1]);
+    const flag = match && (typeAliases[match[1]] || (types.has(match[1]) && match[1]));
 
-    const cards = usingFlag ? allCards.filter(card => {
-      const flag = match[1];
-      const typ = flag === "id" ? "identity" : flag;
-      return (card.type_code === typ) || card.subtype_code.indexOf(flag) > -1;
+    const cards = flag ? allCards.filter(card => {
+      return (card.type_code === flag) || card.subtype_code.indexOf(flag) > -1;
     }) : allCards;
 
-    const query = usingFlag ? match[2] : text;
+    const query = flag ? match[2] : text;
 
     const options = {
       caseSensitive: false,

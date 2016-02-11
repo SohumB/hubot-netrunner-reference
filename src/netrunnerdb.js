@@ -54,21 +54,23 @@ exports.default = function (robot) {
   function search(orig) {
     var allCards = robot.brain.get("cards");
     var types = new Set(robot.brain.get("card_types"));
-    types.add("id");
+
+    var typeAliases = { id: "identity", breaker: "icebreaker" };
+    Object.keys(typeAliases).forEach(function (key) {
+      return types.add(key);
+    });
 
     var aliases = robot.brain.get("hubot-alias-table") || {};
     var text = aliases[orig] || orig;
 
     var match = text.match(/([^/]+)\/(.+)/);
-    var usingFlag = match && types.has(match[1]);
+    var flag = match && (typeAliases[match[1]] || types.has(match[1]) && match[1]);
 
-    var cards = usingFlag ? allCards.filter(function (card) {
-      var flag = match[1];
-      var typ = flag === "id" ? "identity" : flag;
-      return card.type_code === typ || card.subtype_code.indexOf(flag) > -1;
+    var cards = flag ? allCards.filter(function (card) {
+      return card.type_code === flag || card.subtype_code.indexOf(flag) > -1;
     }) : allCards;
 
-    var query = usingFlag ? match[2] : text;
+    var query = flag ? match[2] : text;
 
     var options = {
       caseSensitive: false,
