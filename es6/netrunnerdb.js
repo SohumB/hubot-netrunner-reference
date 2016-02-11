@@ -20,56 +20,25 @@
 //
 
 import "babel-polyfill";
-import Fuse from "fuse.js";
 import render from "./netrunnerdb/render";
 import nrdb from "./netrunnerdb/nrdb";
+import searcher from "./netrunnerdb/search";
 
 export default (robot) => {
+  var search = function(str) {
+    throw new Error("NetrunnerDB data not loaded yet!");
+    return null;
+  };
+
   // Load NDB on startup
   nrdb().then(({ cards, types }) => {
-    robot.brain.set("cards", cards);
-    robot.brain.set("card_types", Array.from(types));
+    search = searcher(cards, new Set(types), () => robot.brain.get("hubot-alias-table"));
   });
 
-  function search(orig) {
-    const allCards = robot.brain.get("cards");
-    const types = new Set(robot.brain.get("card_types"));
-
-    const typeAliases = { id: "identity", breaker: "icebreaker" };
-    Object.keys(typeAliases).forEach(key => types.add(key));
-
-    const aliases = robot.brain.get("hubot-alias-table") || {};
-    const text = aliases[orig] || orig;
-
-    const match = text.match(/([^/]+)\/(.+)/);
-    const flag = match && (typeAliases[match[1]] || (types.has(match[1]) && match[1]));
-
-    const cards = flag ? allCards.filter(card => {
-      return (card.type_code === flag) || card.subtype_code.indexOf(flag) > -1;
-    }) : allCards;
-
-    const query = flag ? match[2] : text;
-
-    const options = {
-      caseSensitive: false,
-      include: ['score'],
-      shouldSort: true,
-      threshold: 0.6,
-      location: 0,
-      distance: 100,
-      maxPatternLength: 32,
-      keys: ['title']
-    };
-    return (new Fuse(cards, options)).search(query);
-  }
-
   function interact(query, res, transform) {
-    const cards = search(query);
-    if (cards.length > 0) {
-      const card = cards
-              .filter(c => c.score === cards[0].score)
-              .sort((c1, c2) => c1.item.title.length - c2.item.title.length)[0];
-      res.send(transform(card.item));
+    const card = search(query);
+    if (card) {
+      res.send(transform(card));
     } else {
       res.send(`Couldn't find a Netrunner card name matching "${query}"`);
     }
