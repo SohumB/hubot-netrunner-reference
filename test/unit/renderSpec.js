@@ -1,6 +1,5 @@
 import nrdb from "../../es6/netrunnerdb/nrdb";
 import render from "../../es6/netrunnerdb/render";
-import request from "request-promise";
 
 describe("Card Rendering", () => {
   var cards;
