@@ -51,7 +51,7 @@ export default (robot) => {
     });
   }
 
-  registerRegex(/(nrdb|netrunner(db)?) (.*)/i, 3, card => `http://netrunnerdb.com${card.imagesrc}`);
+  registerRegex(/(nrdb|netrunner(db)?) (.*)/i, 3, card => card.imagesrc);
   registerRegex(/(nrtx|netrunner(db)?text) (.*)/i, 3, render);
   robot.hear(/\[\[[^\]]+\]\]/g, res => {
     res.match.forEach(match => {
