@@ -35,7 +35,7 @@ export function multiline(fn) {
 
 export default function render(card) {
   const formats = {
-    agenda: `Adv: ${card.advancementcost} • Score: ${card.agendapoints}`,
+    agenda: `Adv: ${card.advancementcost} • Score: ${card.agendapoints}${card.factioncost > 0 ? ` • Influence: ${card.factioncost}` : ""}`,
     identity: card.side_code === "corp" ?
       `Deck: ${card.minimumdecksize} • Influence: ${card.influencelimit || '—'}` :
       `Link: ${card.baselink} • Deck: ${card.minimumdecksize} • Influence: ${card.influencelimit || '—'}`,

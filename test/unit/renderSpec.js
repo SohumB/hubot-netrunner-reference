@@ -45,4 +45,22 @@ Install 3 • Memory: 1 • Strength: X • Influence: 3
 Anarch • Liiga Smilshkalne • Future Proof #102`);
   });
 
+  it("should render agendas without influence", () => {
+    render(card("Priority Requisition")).should.equal(`*Priority Requisition*
+Agenda: Security
+Adv: 5 • Score: 3
+> When you score Priority Requisition, you may rez a piece of ice ignoring all costs.
+_"If it isn't in my terminal by six p.m., heads are going to roll!"_
+Neutral • Gong Studios • Core Set #106`);
+  });
+
+  it("should render agendas with influence", () => {
+    render(card("Global Food Initiative")).should.equal(`*Global Food Initiative*
+Agenda: Initiative
+Adv: 5 • Score: 3 • Influence: 1
+> Global Food Initiative is worth 1 fewer agenda point while in the Runner's score area.
+_"Corporations are made up of people. It's ridiculous to think they'd be either all good or all bad." -Sunny Lebeau_
+Neutral • Meg Owenson • Data and Destiny #26`);
+  });
+
 });
