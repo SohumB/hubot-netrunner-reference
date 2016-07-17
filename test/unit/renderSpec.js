@@ -63,4 +63,44 @@ _"Corporations are made up of people. It's ridiculous to think they'd be either 
 Neutral • Meg Owenson • Data and Destiny #26`);
   });
 
+  it("should render normal ice normally", () => {
+    render(card("Wall of Static")).should.equal(`*Wall of Static*
+ICE: Barrier
+Rez: 3 • Strength: 3 • Influence: 0
+> :subroutine: End the run.
+_"There's nothing worse than seeing that beautiful blue ball of data just out of reach as your connection derezzes. I think they do it just to taunt us." -Ele "Smoke" Scovak_
+Neutral • Adam S. Doyle • Core Set #113`);
+  });
+
+  it("should render ice with trash costs", () => {
+    render(card("Chrysalis")).should.equal(`*Chrysalis*
+ICE: Sentry - AP
+Rez: 3 • Strength: 2 • Trash: 1 • Influence: 2
+> If Chrysalis is accessed from R&D, the Runner must reveal it.
+> When the Runner accesses Chrysalis, he or she encounters it. Ignore this ability if the Runner accesses Chrysalis from Archives.
+> :subroutine: Do 2 net damage.
+
+Jinteki • Donald Crank • 23 Seconds #13`);
+  });
+
+  it("should render normal operations normally", () => {
+    render(card("Hedge Fund")).should.equal(`*Hedge Fund*
+Operation: Transaction
+Cost: 5 • Influence: 0
+> Gain 9:credit:.
+_Hedge Fund. Noun. An ingenious device by which the rich get richer even while every other poor SOB is losing his shirt. -The Anarch's Dictionary, Volume Who's Counting?_
+Neutral • Gong Studios • Core Set #110`);
+  });
+
+  it("should render operations with trash costs", () => {
+    render(card("BOOM!")).should.equal(`*BOOM!*
+Operation: Double - Black Ops
+Cost: 4 • Trash: 1 • Influence: 3
+> Play only if the Runner has at least 2 tags.
+> As an additional cost to play this operation, spend :click:.
+> Do 7 meat damage.
+_Game over._
+Weyland Consortium • JuanManuel Tumburus • Escalation #58`);
+  });
+
 });

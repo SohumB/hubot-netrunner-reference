@@ -39,11 +39,11 @@ export default function render(card) {
     identity: card.side_code === "corp" ?
       `Deck: ${card.minimumdecksize} • Influence: ${card.influencelimit || '—'}` :
       `Link: ${card.baselink} • Deck: ${card.minimumdecksize} • Influence: ${card.influencelimit || '—'}`,
-    operation: `Cost: ${card.cost} • Influence: ${card.factioncost}`,
+    operation: `Cost: ${card.cost} • ${typeof card.trash === "number" ? `Trash: ${card.trash} • ` : ""}Influence: ${card.factioncost}`,
     resource: `Install: ${card.cost} • Influence ${card.factioncost}`,
     program: `Install ${card.cost} • Memory: ${card.memoryunits}${typeof card.strength === "number" || card.strength === "X" ? ` • Strength: ${card.strength}` : ""} • Influence: ${card.factioncost}`,
     asset: `Rez: ${card.cost} • Trash: ${card.trash} • Influence: ${card.factioncost}`,
-    ice: `Rez: ${card.cost} • Strength: ${card.strength} • Influence: ${card.factioncost}`
+    ice: `Rez: ${card.cost} • Strength: ${card.strength} • ${typeof card.trash === "number" ? `Trash: ${card.trash} • ` : ""}Influence: ${card.factioncost}`
   };
   formats.event = formats.operation;
   formats.hardware = formats.resource;
