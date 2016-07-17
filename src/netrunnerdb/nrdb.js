@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = nrdb;
 
-var _corrections = require("./corrections");
-
-var _corrections2 = _interopRequireDefault(_corrections);
-
 var _requestPromise = require("request-promise");
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
@@ -19,14 +15,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function nrdb() {
   return (0, _requestPromise2.default)("http://netrunnerdb.com/api/cards/").then(function (json) {
-    var cards = JSON.parse(json).map(function (card) {
-      return _corrections2.default.reduce(function (acc, correction) {
-        if (correction.test(acc)) {
-          correction.fix(acc);
-        }
-        return acc;
-      }, card);
-    });
+    var cards = JSON.parse(json);
 
     var types = cards.reduce(function (acc, card) {
       acc.add(card.type_code);

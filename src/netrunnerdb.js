@@ -74,7 +74,7 @@ exports.default = function (robot) {
   }
 
   registerRegex(/(nrdb|netrunner(db)?) (.*)/i, 3, function (card) {
-    return "http://netrunnerdb.com" + card.imagesrc;
+    return card.imagesrc;
   });
   registerRegex(/(nrtx|netrunner(db)?text) (.*)/i, 3, _render2.default);
   robot.hear(/\[\[[^\]]+\]\]/g, function (res) {
