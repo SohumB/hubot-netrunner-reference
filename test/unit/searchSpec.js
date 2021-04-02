@@ -1,57 +1,56 @@
-import nrdb from "../../es6/netrunnerdb/nrdb";
-import searcher from "../../es6/netrunnerdb/search";
+const nrdb = require("../../src/netrunnerdb/nrdb.js");
+const searcher = require("../../src/netrunnerdb/search.js");
 
 describe("Card Searching", () => {
-  var cards, search, cleanSearch, nullSearch;
+  var cards, card, search, cleanSearch, nullSearch;
 
-  before(() => {
-    return nrdb()
-      .then(nrdb => {
-        cards = nrdb.cards;
-        cleanSearch = searcher(nrdb.cards, new Set(nrdb.types));
-        nullSearch = searcher(nrdb.cards, new Set(nrdb.types), () => null);
-        search = searcher(
-          nrdb.cards,
-          new Set(nrdb.types),
-          () => ({ fisk: 'id/fisk', doomblade: 'parasite' })
-        );
-      });
+  before(async function () {
+    const { cards: { data, map, types } } = await nrdb("./nrdb.blob.json");
+    cards = data;
+    card = map;
+    cleanSearch = searcher(cards, types);
+    nullSearch = searcher(cards, types, () => null);
+    search = searcher(cards, types,
+      () => ({ fisk: 'id/fisk', abtg: 'accelerated beta test' })
+    );
   });
 
-  function card(name) {
-    return cards.filter(card => card.title === name)[0];
-  }
-
   it("should return undefined on names not found", () => {
-    expect(search("xyzzy")).to.equal(undefined);
-    expect(cleanSearch("xyzzy")).to.equal(undefined);
-    expect(nullSearch("xyzzy")).to.equal(undefined);
+    expect(search("xxyyzzzzyy")).to.equal(undefined);
+    expect(cleanSearch("xxyyzzzzyy")).to.equal(undefined);
+    expect(nullSearch("xxyyzzzzyy")).to.equal(undefined);
   });
 
   it("should search fuzzily", () => {
-    search("overload").should.equal(card("Power Grid Overload"));
-    cleanSearch("overload").should.equal(card("Power Grid Overload"));
-    nullSearch("overload").should.equal(card("Power Grid Overload"));
+    search("grid overload").should.equal(card["Power Grid Overload"]);
+    cleanSearch("grid overload").should.equal(card["Power Grid Overload"]);
+    nullSearch("grid overload").should.equal(card["Power Grid Overload"]);
   });
 
   it("should prioritise shorter matches over longer matches", () => {
-    search("hive").should.equal(card("Hive"));
-    search("hiv").should.equal(card("Hive"));
+    search("hive").should.equal(card["Hive"]);
+    search("hiv").should.equal(card["Hive"]);
   });
 
   it("should support flags", () => {
-    search("hive").should.equal(card("Hive"));
-    search("program/hive").should.equal(card("Hivemind"));
-    search("virus/hive").should.equal(card("Hivemind"));
+    search("hive").should.equal(card["Hive"]);
+    search("program/hive").should.equal(card["Hivemind"]);
+    search("virus/hive").should.equal(card["Hivemind"]);
   });
 
   it("should support aliases", () => {
-    search("doomblade").should.equal(card("Parasite"));
+    search("abtg").should.equal(card["Accelerated Beta Test"]);
   });
 
   it("should support flags in aliases", () => {
-    cleanSearch("fisk").should.equal(card("Fisk Investment Seminar"));
-    nullSearch("fisk").should.equal(card("Fisk Investment Seminar"));
-    search("fisk").should.equal(card("Laramy Fisk: Savvy Investor"));
+    cleanSearch("fisk").should.equal(card["Fisk Investment Seminar"]);
+    nullSearch("fisk").should.equal(card["Fisk Investment Seminar"]);
+    search("fisk").should.equal(card["Laramy Fisk: Savvy Investor"]);
+  });
+
+  it("should prefer newer reprints of cards", () => {
+    cleanSearch("crowdfunding").should.equal(card["28002"]);
+    nullSearch("crowdfunding").should.equal(card["28002"]);
+    search("crowdfunding").should.equal(card["28002"]);
   });
 });

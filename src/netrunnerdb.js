@@ -1,25 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-require("babel-polyfill");
-
-var _render = require("./netrunnerdb/render");
-
-var _render2 = _interopRequireDefault(_render);
-
-var _nrdb = require("./netrunnerdb/nrdb");
-
-var _nrdb2 = _interopRequireDefault(_nrdb);
-
-var _search = require("./netrunnerdb/search");
-
-var _search2 = _interopRequireDefault(_search);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 // Description:
 //   Simple NetrunnerDB.com card image / text fetcher
 //
@@ -38,51 +16,58 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //   hubot netrunnerdbtext <card name> - Displays the Netrunner card <card name>, as text
 //
 // Author:
-//   SohumB, thalweg
+//   SohumB
 //
 
-exports.default = function (robot) {
-  var search = function search(str) {
+const render = require("./netrunnerdb/render.js");
+const nrdb = require("./netrunnerdb/nrdb.js");
+const searcher = require("./netrunnerdb/search");
+
+module.exports = (robot) => {
+  var search = function(str) {
     throw new Error("NetrunnerDB data not loaded yet!");
     return null;
   };
 
-  // Load NDB on startup
-  (0, _nrdb2.default)().then(function (_ref) {
-    var cards = _ref.cards;
-    var types = _ref.types;
-
-    search = (0, _search2.default)(cards, new Set(types), function () {
-      return robot.brain.get("hubot-alias-table");
-    });
+  // Load NRDB on startup
+  // I hate this as much as you do, but I can't figure out a better way to communicate this
+  // across hubot-test-helper's insistence on loading modules and initialising everything for you
+  const data = global.hubot_netrunner_reference_localFile ? 
+                 nrdb(global.hubot_netrunner_reference_localFile) :
+                 nrdb();
+  global.hubot_netrunner_reference_data_pending = data.then(({ cards: { data, types } }) => {
+    search = searcher(data, new Set(types), () => robot.brain.get("hubot-alias-table"));
   });
 
   function interact(query, res, transform) {
-    var card = search(query);
+    const card = search(query);
     if (card) {
       res.send(transform(card));
     } else {
-      res.send("Couldn't find a Netrunner card name matching \"" + query + "\"");
+      res.send(`Couldn't find a Netrunner card name matching "${query}"`);
     }
   }
 
   function registerRegex(rgx, index, transform) {
-    robot.respond(rgx, function (res) {
-      var query = res.match[index];
+    robot.respond(rgx, res => {
+      const query = res.match[index];
       interact(query, res, transform);
     });
   }
 
-  registerRegex(/(nrdb|netrunner(db)?) (.*)/i, 3, function (card) {
-    return card.imagesrc;
-  });
-  registerRegex(/(nrtx|netrunner(db)?text) (.*)/i, 3, _render2.default);
-  robot.hear(/\[\[[^\]]+\]\]/g, function (res) {
-    res.match.forEach(function (match) {
-      var query = match.slice(2, match.length - 2);
-      interact(query, res, _render2.default);
+  registerRegex(/(nrdb|netrunner(db)?) (.*)/i, 3, card => card.image_url);
+  registerRegex(/(nrtx|netrunner(db)?text) (.*)/i, 3, render);
+  robot.hear(/\{\{[^\}]+\}\}/g, res => {
+    res.match.forEach(match => {
+      const query = match.slice(2, match.length - 2);
+      interact(query, res, card => card.image_url);
     });
   });
-};
+  robot.hear(/\[\[[^\]]+\]\]/g, res => {
+    res.match.forEach(match => {
+      const query = match.slice(2, match.length - 2);
+      interact(query, res, render);
+    });
+  });
 
-module.exports = exports['default'];
+}

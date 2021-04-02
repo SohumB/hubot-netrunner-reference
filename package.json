@@ -1,8 +1,8 @@
 {
   "name": "hubot-netrunner-reference",
   "description": "A hubot script that retrieves Netrunner card images and text from netrunnerdb.com",
-  "version": "1.3.0",
-  "author": "Sohum Banerjea (SohumB) <sohumb@gmail.com>",
+  "version": "2.0.4",
+  "author": "Sohum Banerjea <sohumb@gmail.com>",
   "license": "MIT",
   "keywords": [
     "hubot",
@@ -18,25 +18,22 @@
     "url": "https://github.com/SohumB/hubot-netrunner-reference/issues"
   },
   "dependencies": {
-    "babel-polyfill": "^6.3.14",
-    "coffee-script": "~1.6",
-    "fuse.js": "^1.3.1",
-    "request-promise": "^2.0.0"
+    "bent": "^7.3.12",
+    "fuse.js": "^6.4.6"
+  },
+  "peerDependencies": {
+    "hubot": "2.x"
   },
   "devDependencies": {
-    "babel-plugin-add-module-exports": "^0.1.2",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-register": "^6.4.3",
-    "chai": "^3.5.0",
-    "grunt": "~0.4.0",
-    "grunt-babel": "^6.0.0",
-    "grunt-release": "~0.6.0",
-    "load-grunt-tasks": "^3.4.0",
-    "mocha": "^2.4.5"
+    "chai": "^2.1.1",
+    "hubot": "2.x",
+    "hubot-test-helper": "^1.3.0",
+    "matchdep": "~0.3.0",
+    "mocha": "^8.3.2",
+    "sinon": "^10.0.0"
   },
-  "main": "index.coffee",
+  "main": "index.js",
   "scripts": {
-    "test": "mocha --ui tdd --compilers js:babel-register test",
-    "build": "grunt babel:dist"
+    "test": "mocha --recursive --require test/setup.js"
   }
 }
