@@ -21,6 +21,16 @@ _"I…don't remember."_
 Neutral • Liiga Smilshkalne • Core Set #111`);
   });
 
+  it("should render operations with 0 costs correctly", () => {
+    render(card["Audacity"]).should.equal(`**Audacity**
+Operation
+Cost: 0 • Influence: 4
+> Play only if there are at least 3 cards in HQ.
+> Trash all cards in HQ. Place a total of 2 advancement tokens on up to 2 cards that can be advanced.
+
+Weyland Consortium • Ed Mattinian • Earth's Scion #58`);
+  });
+
   it("should render operations with X costs correctly", () => {
     render(card["01085"]).should.equal(`**Psychographics**
 Operation

@@ -34,18 +34,17 @@ function multiline(fn) {
 }
 
 module.exports = function render(card) {
-  const titleCase = w => w.replace(w[0], w[0].toUpperCase());
-
+  const cost = typeof card.cost === "number" ? card.cost : "X";
   const formats = {
     agenda: `Adv: ${card.advancement_cost} • Score: ${card.agenda_points}${card.faction_cost > 0 ? ` • Influence: ${card.faction_cost}` : ""}`,
     identity: card.side_code === "corp" ?
       `Deck: ${card.minimum_deck_size} • Influence: ${card.influence_limit || '—'}` :
       `Link: ${card.base_link} • Deck: ${card.minimum_deck_size} • Influence: ${card.influence_limit || '—'}`,
-    operation: `Cost: ${card.cost ? card.cost : "X"} • ${typeof card.trash_cost === "number" ? `Trash: ${card.trash_cost} • ` : ""}Influence: ${card.faction_cost}`,
-    resource: `Install: ${card.cost} • Influence: ${card.faction_cost}`,
-    program: `Install ${card.cost} • Memory: ${card.memory_cost}${typeof card.strength === "number" || card.strength === null ? ` • Strength: ${card.strength ? card.strength : "X"}` : ""} • Influence: ${card.faction_cost}`,
-    asset: `Rez: ${card.cost} • Trash: ${card.trash_cost} • Influence: ${card.faction_cost}`,
-    ice: `Rez: ${card.cost} • Strength: ${card.strength} • ${typeof card.trash_cost === "number" ? `Trash: ${card.trash_cost} • ` : ""}Influence: ${card.faction_cost}`
+    operation: `Cost: ${cost} • ${typeof card.trash_cost === "number" ? `Trash: ${card.trash_cost} • ` : ""}Influence: ${card.faction_cost}`,
+    resource: `Install: ${cost} • Influence: ${card.faction_cost}`,
+    program: `Install ${cost} • Memory: ${card.memory_cost}${typeof card.strength === "number" || card.strength === null ? ` • Strength: ${card.strength ? card.strength : "X"}` : ""} • Influence: ${card.faction_cost}`,
+    asset: `Rez: ${cost} • Trash: ${card.trash_cost} • Influence: ${card.faction_cost}`,
+    ice: `Rez: ${cost} • Strength: ${card.strength} • ${typeof card.trash_cost === "number" ? `Trash: ${card.trash_cost} • ` : ""}Influence: ${card.faction_cost}`
   };
   formats.event = formats.operation;
   formats.hardware = formats.resource;
